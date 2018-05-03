@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/LoginAction")
 public class LoginAction extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private LoginService service;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -26,6 +26,11 @@ public class LoginAction extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    
+    public void destroy() {
+		super.destroy(); // Just puts "destroy" string in log
+		// Put your code here
+	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -43,13 +48,30 @@ public class LoginAction extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String path = request.getContextPath();
+		System.out.println("path"+path);
 		String username = request.getParameter("username");
 		String pswd = request.getParameter("pswd");
 		
 		List<Object> params = new ArrayList<Object>();
 		params.add(username);
 		params.add(pswd);
+		System.out.println(params);
 		boolean flag = service.login(params);
+		System.out.println(flag);
+        if (flag) {
+			
+			request.getSession().setAttribute("username", username);
+			response.sendRedirect(path+"/main.jsp");
+		}else{
+						
+			response.sendRedirect(path+"/index.jsp");
+		}
+        out.flush();
+		out.close();
 	}
-
+    
+	public void init() throws ServletException {
+		// Put your code here
+		service = new LoginDao();
+	}
 }
