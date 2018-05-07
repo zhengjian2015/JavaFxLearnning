@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +91,74 @@ public class JdbcUtils  {
 		
  		return map;
  		
+ 	}
+ 	
+ 	/**
+	 * 查询返回多条记录
+	 * 
+	 * @param sql
+	 * @param params
+	 * @return
+	 * @throws SQLException
+	 */
+ 	
+ 	public List<Map<String,Object>> findMoreResult(String sql,
+			List<Object> params) throws SQLException {
+ 		
+ 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+ 		pstmt = connection.prepareStatement(sql);
+ 		int index = 1; // 表示占位符
+ 		if (params != null && !params.isEmpty()) {
+			for (int i = 0; i < params.size(); i++) {
+				pstmt.setObject(index++, params.get(i));
+			}
+		}
+ 		resultSet = pstmt.executeQuery(); // 返回查询结果集合
+		ResultSetMetaData metaData = resultSet.getMetaData(); // 获得列的结果
+		
+		while(resultSet.next()) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			int cols_len = metaData.getColumnCount();
+			for (int i = 0; i < cols_len; i++) {
+				String col_name = metaData.getColumnName(i + 1); // 获取第 i列的字段名称
+				
+				Object col_value = resultSet.getObject(col_name); // 获取第i列的内容值
+				if (col_value == null) {
+					col_value = "";
+				}
+
+				map.put(col_name, col_value);
+			}
+			list.add(map);
+		}
+ 		
+		
+ 		return list;
+ 	}
+ 	
+ 	/**
+	 * 完成对数据库标的增加删除和修改的操作
+	 * 
+	 * @param sql
+	 * @param params
+	 * @return
+	 * @throws SQLException
+	 */
+ 	
+ 	public boolean updateByPreparedStatement(String sql,List<Object> params) throws SQLException{
+ 		boolean flag = false;
+ 		int result = -1;// 表示当用户执行增加删除和修改的操作影响的行数
+		int index = 1; // 表示 占位符 ，从1开始
+		pstmt = connection.prepareStatement(sql);
+		if(params !=null && !params.isEmpty()) {
+			for(int i=0;i<params.size();i++) {
+				pstmt.setObject(index++, params.get(i));
+			}
+		}
+		
+ 		result = pstmt.executeUpdate();
+ 		flag = result > 0? true:false;
+ 		return flag;
  	}
  	
  	/**关闭数据库访问
