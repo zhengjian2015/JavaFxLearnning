@@ -148,12 +148,14 @@ if(list==null){
 	
 	
 	</script>
-</head>
-<body>
-<div>
+
+  </head>
+  
+  <body>
+   <div>
    <table width=60% align="center">
    <tr>
-   		<td align="left"><font size=2>欢迎您的光临<br><a href="javascript:logout();">退出</a></font></td>
+   		<td align="left"><font size=2>欢迎您的光临，<%=username%><br><a href="javascript:logout();">退出</a></font></td>
    </tr>
    	<tr>
    		<td align="center">
@@ -165,14 +167,14 @@ if(list==null){
    			</tr>
    			<tr>
    				<td >产品名称</td>
-   				<td ><input type="text" name="proname" value=""/></td>
+   				<td ><input type="text" name="proname" value="<%= productName!=null?productName:"" %>"/></td>
    				
    			</tr>
    			
    			<tr>
    				<td colspan="2" align="center">
    					<button type="button" onclick="searchProduct()" >查询</button>
-   					<button type="button" onclick="javascript:location.href='addProduct.jsp'">添加</button>   					
+   					<button type="button" onclick="javascript:location.href='<%=path %>/addProduct.jsp'">添加</button>   					
    					
    				</td>   				
    			</tr>   		
@@ -200,14 +202,36 @@ if(list==null){
    				<td>产品价格</td>
    			
    			</tr>
-   		
+   			<%
+   			if(list!=null && !list.isEmpty()){
+   			
+   				for(Map<String,Object> map :list){%>
+   			
+   				<tr align="center">
+   				<td width=10%><input type="checkbox" name="ids" value="<%=map.get("proid") %>"/></td>
+   				<td width=30%><%=map.get("proname") %></td>
+   				<td width=30%><%=map.get("proaddress") %></td>
+   				<td><%=map.get("proprice") %></td>
+   				
+   				<%}
+   			
+   			
+   			}else{%>
+   			
    			<tr align="center">
    				<td width=10%><input type="checkbox" name="" /></td>
    				<td width=30%></td>
    				<td width=30%></td>
    				<td></td>
    			
-   			</tr>
+   			</tr><%
+   			
+   			}   			
+   			 %>
+   			
+   	
+   			
+   		
    		</table>   		
    		</form>
    		</td>
@@ -224,13 +248,31 @@ if(list==null){
    	
    	<tr>
    		<td colspan="4" align="center">
-   			共页    
+   			共<%=dividePage.getPageCount()  %>页    
    			<a href="javascript:first();">首页</a>   
    			<a href="javascript:forward();">上一页</a> 
    			<a href="javascript:next();">下一页</a> 
    			<a href="javascript:end();">尾页</a> 
    			跳转到<select name="select" onchange="changePage(this.value)">
    			
+   			<%
+   			int pageCount = dividePage.getPageCount();
+   			if(pageCount>0){
+   			for(int i = 1 ; i<=pageCount;i++){%>
+   			
+   			<option value="<%=i %>" <%= (i==dividePage.getCurrentPage()?"selected":"")%>>  <%=i %>
+   			</option>
+   			
+   			<%			
+   			}
+   			
+   			}else{// 无记录
+   				%>
+   				<option value="1">1</option>   
+   			 <%}			
+   			
+   			%>
+   					
    			</select>
    		
    		</td>
@@ -242,6 +284,13 @@ if(list==null){
    
    </table>
    
+   
+   
+   </div>
+   
+   
+  </body>
+</html>
    
    
    </div>

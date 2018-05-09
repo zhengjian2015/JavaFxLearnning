@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.jdbc.JdbcUtils;
+import org.apache.log4j.Logger;  
 
 public class ProductDao implements ProductService{
-	
+	public static Logger logger = Logger.getLogger(ProductDao.class);   
 	private JdbcUtils jdbcUtils;
 	
 	public ProductDao() {
@@ -54,8 +55,9 @@ public class ProductDao implements ProductService{
 				params.add(start);
 				params.add(end);
 			}	
+			 
 			list = jdbcUtils.findMoreResult(sql, params);
-			
+			logger.debug(sql);  
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -65,7 +67,7 @@ public class ProductDao implements ProductService{
 			jdbcUtils.releaseConn();
 			
 		}
-		return null;
+		return list;
 	}
 
 	@Override
@@ -106,7 +108,21 @@ public class ProductDao implements ProductService{
 	@Override
 	public Map<String, Object> viewProduct(String proid) {
 		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> map = null;
+		try {
+			jdbcUtils.getConnection();
+			List<Object> params = new ArrayList<Object>();
+			params.add(proid);
+			String sql = "select * from product where proid = ?";
+			map = jdbcUtils.findSimpleResult(sql, params);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally{
+			// 关闭数据库连接
+			jdbcUtils.releaseConn();
+		}
+		return map;
 	}
 
 }

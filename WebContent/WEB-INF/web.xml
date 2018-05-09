@@ -27,7 +27,6 @@
     <servlet-name>ProductAction</servlet-name>
     <servlet-class>com.product.ProductAction</servlet-class>
   </servlet>
-  
   <servlet-mapping>
     <servlet-name>LoginAction</servlet-name>
     <url-pattern>/servlet/LoginAction</url-pattern>
@@ -36,7 +35,7 @@
     <servlet-name>RegisterAction</servlet-name>
     <url-pattern>/servlet/RegisterAction</url-pattern>
   </servlet-mapping>
-   <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>ProductAction</servlet-name>
     <url-pattern>/servlet/ProductAction</url-pattern>
   </servlet-mapping>
