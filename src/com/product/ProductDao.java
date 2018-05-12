@@ -101,8 +101,31 @@ public class ProductDao implements ProductService{
 
 	@Override
 	public boolean delProduct(String[] ids) {
+		boolean flag = false;
+		try {
+			jdbcUtils.getConnection();
+			/*for(String j:ids) {
+				System.out.println(j);
+				params.add(j);
+			}
+				String sql = "delete from product where proid = ?";
+				jdbcUtils.updateByPreparedStatement(sql, params);*/
+			if (ids!=null) {
+				String[] sql = new String[ids.length];
+				for(int i = 0 ; i< ids.length; i++){
+					sql[i] = "delete from product where proid = '"+ids[i]+"'";
+					System.out.println(sql[i]);
+				}
+				flag = jdbcUtils.deleteByBatch(sql);	
+			}
+				
+		} catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			jdbcUtils.releaseConn();
+		}
 		// TODO Auto-generated method stub
-		return false;
+		return flag;
 	}
 
 	@Override

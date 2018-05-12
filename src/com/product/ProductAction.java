@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 import com.util.DividePage;
 import com.util.UUIDTools;
@@ -26,6 +27,7 @@ import com.util.UUIDTools;
 public class ProductAction extends HttpServlet {
 
 	private ProductService service;
+	public static Logger logger = Logger.getLogger(ProductAction.class);   
 	/**
 	 * Constructor of the object.
 	 */
@@ -115,6 +117,8 @@ public class ProductAction extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		System.out.println("进入del");
+		logger.debug("del");
+		logger.info("what fuck");
 		//获得复选框的值
 		String[] ids = request.getParameterValues("ids");
 		for (int i = 0; i < ids.length; i++) {
@@ -209,6 +213,8 @@ public class ProductAction extends HttpServlet {
 					params.add(imageName);//参数传入  proimage			
 					//String path = request.getRealPath("/upload");
 					String upload_dir = request.getServletContext().getRealPath("/upload");//获取服务器端 /upload 路径
+					System.out.println("***");
+					System.out.println(request.getServletContext());
 					File uploadFile = new File(upload_dir+"/"+imageName);
 					System.out.println("---upload_dir--->>"+uploadFile);
 					fileItem.write(uploadFile);					

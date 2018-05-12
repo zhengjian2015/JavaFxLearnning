@@ -38,6 +38,7 @@ if(list==null){
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript">
 	function searchProduct(){
 		var th = document.form2;
@@ -102,7 +103,7 @@ if(list==null){
 			return;
 		
 		}
-		
+		console.log(getSelectedCount());
 		var th = document.form1;
 		th.action="<%=path%>/servlet/ProductAction?action_flag=del";
 		th.submit();		
@@ -146,6 +147,20 @@ if(list==null){
 		
 	}
 	
+	function getAjax(){
+		var ids = $("#proname").val();
+		jQuery.ajax({
+	        type: "GET",
+	        url: "<%=path%>/servlet/ProductAction",
+	        data: {"action_flag":"view","id":ids},
+	        cache: false,
+	        cache: false,
+	        success: function(json){
+	            //console.log(json);
+	        }
+	    });
+			
+		}
 	
 	</script>
 
@@ -167,7 +182,7 @@ if(list==null){
    			</tr>
    			<tr>
    				<td >产品名称</td>
-   				<td ><input type="text" name="proname" value="<%= productName!=null?productName:"" %>"/></td>
+   				<td ><input type="text" name="proname" id="proname" value="<%= productName!=null?productName:"" %>"/></td>
    				
    			</tr>
    			
@@ -175,7 +190,7 @@ if(list==null){
    				<td colspan="2" align="center">
    					<button type="button" onclick="searchProduct()" >查询</button>
    					<button type="button" onclick="javascript:location.href='<%=path %>/addProduct.jsp'">添加</button>   					
-   					
+   					<!-- <button type="button" id="ajax " onclick="getAjax()" >getAjax</button>-->
    				</td>   				
    			</tr>   		
    		</table>  	

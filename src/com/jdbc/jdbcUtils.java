@@ -92,6 +92,31 @@ public class JdbcUtils  {
  		return map;
  		
  	}
+
+	/** 实现批处理删除
+	 * @param sql
+	 * @return
+	 * @throws SQLException
+	 */
+ 	public boolean deleteByBatch(String[] sql) throws SQLException{
+		boolean flag = false;
+		stmt = connection.createStatement();
+		if (sql!=null) { //判断数组是否为空，不能用length来判断，否则可能会报空指针异常。
+			
+			for(int i = 0 ; i<sql.length ; i++){
+				System.out.println("ssss");
+				System.out.println(sql[i]);
+				stmt.addBatch(sql[i]);
+			}
+			
+			int[] count = stmt.executeBatch();
+			if (count!=null) {
+				flag = true;
+			}
+			
+		}	
+		return flag;		
+	}
  	
  	/**
 	 * 查询返回多条记录
