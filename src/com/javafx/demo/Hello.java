@@ -11,6 +11,7 @@ public class Hello extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("这是第1个Demo");
         primaryStage.show();
     }
 }
