@@ -38,7 +38,7 @@ public class Main8 extends Application {
 
         Group group = new Group();
         group.getChildren().addAll(b1,b2,b3);
-
+        group.getChildren().remove(b1);
         //group.setAutoSizeChildren(false);
         //group.getChildren().clear();
 
