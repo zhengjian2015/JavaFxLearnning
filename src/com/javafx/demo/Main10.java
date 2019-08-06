@@ -11,6 +11,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+/**
+ * 也可以参考http://www.javafxchina.net/code/doc/03/02/
+ */
 public class Main10 extends Application {
     public static void main(String[] args) {
         launch(args);
